@@ -4,37 +4,52 @@ const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
 
 const publicPath = Path.join(__dirname, '../public');
+const PORT = process.env.PORT || 8080
+const api = require('./api')
 
 const server = new Hapi.Server({
-    port: 8080,
+    port: PORT,
+    host: 'localhost',
     routes: {
         files: {
             relativeTo: publicPath,
-        },
-    },
+        }
+    }
 });
 
 const provision = async () => {
     await server.register(Inert);
     await server.register(Vision);
 
-    server.route({
-        method: 'GET',
-        path: '/images/{param*}',
-        handler: {
-            directory: {
-                path: Path.join(publicPath, 'images'),
-            },
-        },
-    });
+    server.route(api)
 
     server.route({
         method: 'GET',
-        path: '/{param*}',
+        path: '/',
+        handler: function (request, h) {
+            return h.file('index.html')
+        }
+    })
+
+    server.route({
+        method: 'GET',
+        path: '/{filename}',
         handler: {
-            file: Path.join(publicPath, '/index.html'),
-        },
-    });
+            file: function (request) {
+                return request.params.filename
+            }
+        }
+    })
+
+    // server.route({
+    //     method: 'GET',
+    //     path: '/images/{param*}',
+    //     handler: {
+    //         directory: {
+    //             path: Path.join(publicPath, 'images'),
+    //         },
+    //     },
+    // });
 
     try {
         await server.start();
