@@ -5,7 +5,7 @@ const Vision = require('@hapi/vision');
 
 const publicPath = Path.join(__dirname, '../public');
 const PORT = process.env.PORT || 8080
-const api = require('./api')
+const routes = require('./routes')
 
 const server = new Hapi.Server({
     port: PORT,
@@ -21,7 +21,7 @@ const provision = async () => {
     await server.register(Inert);
     await server.register(Vision);
 
-    server.route(api)
+    server.route(routes)
 
     server.route({
         method: 'GET',

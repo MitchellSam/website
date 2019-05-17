@@ -1,14 +1,18 @@
 import axios from 'axios'
-import history from './history'
+import history from '../history'
 
+// ACTION TYPES
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
 
+// INITIAL STATE
 const defaultUser = {}
 
-const getUser = user => ({type: GET_USER, user})
-const removeUser = () => ({type: REMOVE_USER})
+// ACTION CREATORS
+const getUser = user => ({ type: GET_USER, user })
+const removeUser = () => ({ type: REMOVE_USER })
 
+// THUNK CREATORS
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
@@ -21,9 +25,9 @@ export const me = () => async dispatch => {
 export const auth = (email, password, method) => async dispatch => {
   let res
   try {
-    res = await axios.post(`/auth/${method}`, {email, password})
+    res = await axios.post(`/auth/${method}`, { email, password })
   } catch (authError) {
-    return dispatch(getUser({error: authError}))
+    return dispatch(getUser({ error: authError }))
   }
 
   try {
@@ -44,7 +48,8 @@ export const logout = () => async dispatch => {
   }
 }
 
-const user = function(state = defaultUser, action) {
+// REDUCER
+export default function (state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
       return action.user
@@ -54,18 +59,3 @@ const user = function(state = defaultUser, action) {
       return state
   }
 }
-
-import {createStore, combineReducers, applyMiddleware} from 'redux'
-import { createLogger } from 'redux-logger'
-import thunkMiddleware from 'redux-thunk'
-import {composeWithDevTools} from 'redux-devtools-extension'
-
-const reducer = combineReducers({user})
-const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
-)
-const store = createStore(reducer, middleware)
-
-export default store
-
-
