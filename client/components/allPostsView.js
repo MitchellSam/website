@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { PostList } from '../components'
+import { PostList, CreatePost } from '../components'
 
 import { connect } from 'react-redux'
-import { loadAllPosts } from '../store'
+import { loadAllPosts, removePost } from '../store'
 
 class AllPostsView extends Component {
   componentDidMount() {
@@ -13,7 +13,8 @@ class AllPostsView extends Component {
     return (
       <div>
         <h2>AllPostsView</h2>
-        <PostList {...this.props.post} />
+        <PostList {...this.props} />
+        <CreatePost />
       </div>
     )
   }
@@ -24,7 +25,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadPosts: () => dispatch(loadAllPosts())
+  loadPosts: () => dispatch(loadAllPosts()),
+  deletePost: (postId) => dispatch(removePost(postId))
 })
 
 export default connect(

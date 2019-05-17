@@ -55,7 +55,7 @@ export const loadSinglePost = (postId) => async dispatch => {
 
 export const submitPost = (body) => async dispatch => {
     try {
-        await axios.post('/api/posts/', body)
+        await axios.post('/api/posts', body)
         const res = await axios.get('/api/posts')
         dispatch(getAllPosts(res.data || {} ))
     } catch (err) {

@@ -6,6 +6,7 @@ export {default as SignUp} from './signup'
 
 export {default as AllPostsView} from './allPostsView'
 export {default as PostList} from './postList'
+export {default as CreatePost} from './createPost'
 
 export {default as SinglePostView} from './singlePostView'
 export {default as SinglePost} from './singlePost'
