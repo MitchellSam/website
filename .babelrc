@@ -1,7 +1,8 @@
 {
     "presets": [
-        "@babel/react",
-        "@babel/env"
+        "@emotion/babel-preset-css-prop",
+        "@babel/preset-react",
+        "@babel/preset-env"
     ],
     "plugins": [
         "@babel/plugin-syntax-dynamic-import",

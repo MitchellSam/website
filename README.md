@@ -12,3 +12,8 @@ react router
 
 pg-promise
 
+promises
+.then syntax
+
+emotion
+- babel preset vs jsx pragma

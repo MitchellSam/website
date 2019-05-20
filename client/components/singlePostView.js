@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 import React, { Component } from 'react'
-import { SinglePost } from '../components'
+import { SinglePost, EditPost } from '../components'
 
 import { connect } from 'react-redux'
 import { loadSinglePost, removePost} from '../store'
@@ -12,11 +12,11 @@ class SinglePostView extends Component {
 
   render() {
     const selectedPost = this.props.post.selectedPost
-    console.log('history', this.props.history)
     return (
       <div>
         <h2>SinglePostView</h2>
         <SinglePost {...this.props} />
+        <EditPost {...this.props}/>
         <button onClick={() => {
           this.props.deletePost(selectedPost[0].id)
           this.props.history.push('/')

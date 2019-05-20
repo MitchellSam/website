@@ -2,9 +2,9 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
-import { submitPost } from '../store'
+import { editPost } from '../store'
 
-class CreatePost extends Component {
+class EditPost extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,23 +24,20 @@ class CreatePost extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if(this.state.title === '' || this.state.content === '') {
-            // do nothing
-        } else {
-            this.props.createPost(this.state)
-        }
+        this.props.changePost(this.props.post.selectedPost[0].id, this.state)
+        this.props.history.push('/')
     }
 
     render() {
         return (
             <div>
-                <h2>CreatePost</h2>
+                <h2>EditPost</h2>
                 <form onSubmit={this.handleSubmit}>
                     <label> Title: 
-                        <input name="title" type="text" value={this.state.title} onChange={this.handleChange} placeholder="title"/>
+                        <input name="title" type="text" value={this.state.title} onChange={this.handleChange} />
                     </label>
                     <label> Content: 
-                        <input name="content" type="text" value={this.state.content} onChange={this.handleChange} placeholder="content"/>
+                        <input name="content" type="text" value={this.state.content} onChange={this.handleChange} />
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
@@ -51,8 +48,8 @@ class CreatePost extends Component {
 
 const mapDispatchToProps = function (dispatch) {
     return {
-        createPost: function (payload) {
-            dispatch(submitPost(payload));
+        changePost: function (postId, payload) {
+            dispatch(editPost(postId, payload));
         }
     };
 };
@@ -60,4 +57,4 @@ const mapDispatchToProps = function (dispatch) {
 export default connect(
     null,
     mapDispatchToProps
-)(CreatePost);
+)(EditPost);

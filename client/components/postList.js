@@ -11,11 +11,10 @@ const PostList = props => {
                 <div
                     key={post.id}
                     id={post.id}
-                    // onClick={() => console.log('clicked on post: ',post)}
                 >
                     <Link to={'/posts/' + post.id}>{post.title}</Link>
                     <button onClick={() => {
-                        console.log('deleting post: ', post.id)
+                        console.log('deleting post: ', post)
                         deletePost(post.id)
                     }}>delete</button>
                 </div>

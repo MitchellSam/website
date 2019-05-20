@@ -10,3 +10,4 @@ export {default as CreatePost} from './createPost'
 
 export {default as SinglePostView} from './singlePostView'
 export {default as SinglePost} from './singlePost'
+export {default as EditPost} from './editPost'
