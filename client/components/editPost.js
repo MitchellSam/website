@@ -24,8 +24,12 @@ class EditPost extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.changePost(this.props.post.selectedPost[0].id, this.state)
-        this.props.history.push('/')
+        if(this.state.title === '' || this.state.content === '') {
+            // do nothing
+        } else {
+            this.props.changePost(this.props.post.selectedPost[0].id, this.state)
+            this.props.history.push('/')
+        }
     }
 
     render() {
@@ -34,10 +38,10 @@ class EditPost extends Component {
                 <h2>EditPost</h2>
                 <form onSubmit={this.handleSubmit}>
                     <label> Title: 
-                        <input name="title" type="text" value={this.state.title} onChange={this.handleChange} />
+                        <input name="title" type="text" value={this.state.title} onChange={this.handleChange} placeholder="title"/>
                     </label>
                     <label> Content: 
-                        <input name="content" type="text" value={this.state.content} onChange={this.handleChange} />
+                        <input name="content" type="text" value={this.state.content} onChange={this.handleChange} placeholder="content"/>
                     </label>
                     <input type="submit" value="Submit" />
                 </form>

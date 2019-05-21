@@ -44,10 +44,15 @@ module.exports = [{
     path: '/api/posts/{id}',
     handler: async function (request, h) {
         try {
-            let payload = request.payload
+            let payload = request.payload || {
+                title: 'title', 
+                content: 'content', 
+                userId: null
+            }
             payload = {
-                title: request.payload.title, 
-                content: request.payload.content
+                title: payload.title || 'title', 
+                content: payload.content || 'content', 
+                userId: payload.userId || null
             }
             const data = await db.query(`UPDATE posts SET (title, content) = ($1, $2) WHERE id = $3`, [payload.title, payload.content, request.params.id])
             return h.response(data.rows)
