@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Route, Switch} from 'react-router-dom'
-import {AllPostsView, SinglePostView, Login, SignUp} from './components'
+import {AllPostsView, SinglePostView, Login, SignUp, Profile} from './components'
 
 class Routes extends Component {
   componentDidMount() {
@@ -12,6 +12,7 @@ class Routes extends Component {
         <Route exact path="/" component={AllPostsView} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/profile" component={Profile} />
 
         <Route path="/posts/:postId" component={SinglePostView} />
       </Switch>

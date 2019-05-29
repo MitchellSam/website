@@ -1,76 +1,58 @@
 const db = require('../db')
+const Joi = require('@hapi/joi')
 
 module.exports = [{
+    // Load the logged in user
     method: 'GET',
     path: '/auth/me',
     handler: async function (request, h) {
         try {
-            const data = await db.query('SELECT * FROM posts')
-            return h.response(data.rows)
-
-            /////
-
-            // if (!req.session.userId) {
-            //     res.sendStatus(401)
-            //   } else {
-            //     const user = await User.findById(req.session.userId)
-            //     if (!user) {
-            //       res.sendStatus(401)
-            //     } else {
-            //       res.json(user)
-            //     }
-            //   }
-
+            if (!request.state.session) {
+                return h.response('You are a guest user.')//.code(401)
+            } else {
+                return h.response(request.state.session.userId)
+            }
         } catch (error) {
             console.error(error)
         }
     }
 }, {
-    method: 'PUT',
+    // Log in the user
+    method: 'POST',
     path: '/auth/login',
     handler: async function (request, h) {
         try {
-            let payload = request.payload
-            payload = {
-                title: request.payload.title,
-                content: request.payload.content
+            const { username, password } = request.payload
+            const user = await db.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password])
+
+            if (!user.rows[0]) {
+                return h.response('Incorrect login.').code(401)
+            } else {
+                let cookie = request.state.session
+
+                if (!cookie) {
+                    cookie = {
+                        userId: user.rows[0].id,
+                        counter: 0,
+                    }
+                }
+                ++cookie.counter
+
+                h.state('session', cookie)
+                return h.response(user.rows[0])
             }
-            const data = await db.query(`UPDATE posts SET (title, content) = ($1, $2) WHERE id = $3`, [payload.title, payload.content, request.params.id])
-            return h.response(data.rows)
-
-            /////
-
-            // const user = await User.findOne({
-            //     where: {
-            //       email: req.body.email,
-            //       password: req.body.password
-            //     }
-            //   })
-            //   if (!user) {
-            //     res.sendStatus(401)
-            //   } else {
-            //     // attach user id to the session
-            //     req.session.userId = user.id
-            //     res.json(user)
-            //   }
-
         } catch (error) {
             console.error(error)
         }
     }
 }, {
+    // Log out the user
     method: 'DELETE',
     path: '/auth/logout',
     handler: async function (request, h) {
         try {
-            const data = await db.query('DELETE FROM posts WHERE id = $1', [request.params.id])
-            return h.response(data.rows)
-
-            /////
-
-            // delete req.session.userId;
-            // res.sendStatus(204)
-  
+            h.unstate('session')
+            return h.response('Logout Successful!')
         } catch (error) {
             console.error(error)
         }

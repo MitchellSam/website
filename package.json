@@ -27,6 +27,7 @@
     "@hapi/cookie": "^10.1.0",
     "@hapi/hapi": "^18.3.1",
     "@hapi/inert": "^5.2.0",
+    "@hapi/joi": "^15.0.3",
     "@hapi/vision": "^5.5.2",
     "axios": "^0.18.0",
     "babel-plugin-emotion": "^10.0.9",

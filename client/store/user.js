@@ -9,11 +9,17 @@ const REMOVE_USER = 'REMOVE_USER'
 const defaultUser = {}
 
 // ACTION CREATORS
-const getUser = user => ({ type: GET_USER, user })
-const removeUser = () => ({ type: REMOVE_USER })
+const getUser = user => ({ 
+  type: GET_USER, 
+  user: user 
+})
+
+const removeUser = () => ({ 
+  type: REMOVE_USER 
+})
 
 // THUNK CREATORS
-export const me = () => async dispatch => {
+export const getMe = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
     dispatch(getUser(res.data || defaultUser))
@@ -22,27 +28,55 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, method) => async dispatch => {
+// export const auth = (email, password, method) => async dispatch => {
+//   let res
+//   try {
+//     res = await axios.post('/auth/${method}', { email, password })
+//   } catch (authError) {
+//     return dispatch(getUser({ error: authError }))
+//   }
+
+//   try {
+//     dispatch(getUser(res.data))
+//     history.push('/profile')
+//   } catch (dispatchOrHistoryErr) {
+//     console.error(dispatchOrHistoryErr)
+//   }
+// }
+
+export const loginUser = (body) => async dispatch => {
   let res
   try {
-    res = await axios.post(`/auth/${method}`, { email, password })
-  } catch (authError) {
-    return dispatch(getUser({ error: authError }))
+    res = await axios.post('/auth/login', body)
+  } catch (err) {
+    console.error(err)
   }
 
   try {
-    dispatch(getUser(res.data))
-    history.push('/home')
-  } catch (dispatchOrHistoryErr) {
-    console.error(dispatchOrHistoryErr)
+    if(res) {
+      dispatch(getUser(res.data))
+      // history.push('/profile')
+    }
+  } catch (err) {
+    console.error(err)
   }
 }
 
-export const logout = () => async dispatch => {
+export const logoutUser = () => async dispatch => {
   try {
-    await axios.post('/auth/logout')
+    await axios.delete('/auth/logout')
     dispatch(removeUser())
-    history.push('/login')
+    // history.push('/')
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const signupUser = (body) => async dispatch => {
+
+  try {
+    await axios.post('/api/users', body)
+    await dispatch(loginUser(body))
   } catch (err) {
     console.error(err)
   }

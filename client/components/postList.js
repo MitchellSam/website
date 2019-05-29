@@ -14,7 +14,6 @@ const PostList = props => {
                 >
                     <Link to={'/posts/' + post.id}>{post.title}</Link>
                     <button onClick={() => {
-                        console.log('deleting post: ', post)
                         deletePost(post.id)
                     }}>delete</button>
                 </div>

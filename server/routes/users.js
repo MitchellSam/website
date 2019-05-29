@@ -1,6 +1,7 @@
 const db = require('../db')
 
 module.exports = [{
+    // Load all users
     method: 'GET',
     path: '/api/users',
     handler: async function (request, h) {
@@ -12,6 +13,7 @@ module.exports = [{
         }
     }
 }, {
+    // Load a user
     method: 'GET',
     path: '/api/users/{id}',
     handler: async function (request, h) {
@@ -23,6 +25,7 @@ module.exports = [{
         }
     }
 }, {
+    // Load a user's posts
     method: 'GET',
     path: '/api/users/{id}/posts',
     handler: async function (request, h) {
@@ -34,42 +37,33 @@ module.exports = [{
         }
     }
 }, {
+    // Register a new user
     method: 'POST',
     path: '/api/users',
-    handler: async function (request, h) {        
+    handler: async function (request, h) {
         try {
-            let payload = request.payload
-            payload = {
-                username: payload.username, 
-                password: payload.password, 
-                firstname: payload.firstname,
-                lastname: payload.lastname
-            }
-            const data = await db.query(`INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4)`, [payload.username, payload.password, payload.firstname, payload.lastname])
+            const { username, password, firstname, lastname } = request.payload
+            const data = await db.query(`INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4)`, [username, password, firstname, lastname])
             return h.response(data.rows)
         } catch (error) {
             console.error(error)
         }
     }
 }, {
+    // Edit a user's data
     method: 'PUT',
     path: '/api/users/{id}',
     handler: async function (request, h) {
         try {
-            let payload = request.payload
-            payload = {
-                username: payload.username, 
-                password: payload.password, 
-                firstname: payload.firstname,
-                lastname: payload.lastname
-            }
-            const data = await db.query(`UPDATE users SET (username, password, firstname, lastname) = ($1, $2, $3, $4) WHERE id = $5`, [payload.username, payload.password, payload.firstname, payload.lastname, request.params.id])
+            const { username, password, firstname, lastname } = request.payload
+            const data = await db.query(`UPDATE users SET (username, password, firstname, lastname) = ($1, $2, $3, $4) WHERE id = $5`, [username, password, firstname, lastname, request.params.id])
             return h.response(data.rows)
         } catch (error) {
             console.error(error)
         }
     }
 }, {
+    // Delete a user
     method: 'DELETE',
     path: '/api/users/{id}',
     handler: async function (request, h) {

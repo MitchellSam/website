@@ -1,12 +1,8 @@
 import axios from 'axios'
-import history from '../history'
 
 // ACTION TYPES
 const GET_ALL_POSTS = 'GET_ALL_POSTS'
 const SELECT_POST = 'SELECT_POST'
-// const CREATE_POST = 'CREATE_POST'
-// const UPDATE_POST = 'UPDATE_POST'
-// const DELETE_POST = 'DELETE_POST'
 
 // ACTION CREATORS
 const getAllPosts = posts => ({
@@ -18,21 +14,6 @@ const selectPost = (post) => ({
     type: SELECT_POST,
     selectedPost: post
 })
-
-// const createPost = (post) => ({ 
-//     type: CREATE_POST,
-//     createdPost: post
-// })
-
-// const updatePost = (post) => ({ 
-//     type: UPDATE_POST,
-//     updatedPost: post
-// })
-
-// const deletePost = (post) => ({ 
-//     type: DELETE_POST,
-//     deletedPost: post
-// })
 
 // THUNK CREATORS
 export const loadAllPosts = () => async dispatch => {

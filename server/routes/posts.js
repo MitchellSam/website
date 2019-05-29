@@ -1,6 +1,7 @@
 const db = require('../db')
 
 module.exports = [{
+    // Load all posts
     method: 'GET',
     path: '/api/posts',
     handler: async function (request, h) {
@@ -12,6 +13,7 @@ module.exports = [{
         }
     }
 }, {
+    // Load single post
     method: 'GET',
     path: '/api/posts/{id}',
     handler: async function (request, h) {
@@ -23,44 +25,33 @@ module.exports = [{
         }
     }
 }, {
+    // Create a post
     method: 'POST',
     path: '/api/posts',
-    handler: async function (request, h) {        
+    handler: async function (request, h) {
         try {
-            let payload = request.payload
-            payload = {
-                title: payload.title, 
-                content: payload.content, 
-                userId: payload.userId
-            }
-            const data = await db.query(`INSERT INTO posts (title, content, "userId") VALUES ($1, $2, $3)`, [payload.title, payload.content, payload.userId])
+            const { title, content, userId } = request.payload
+            const data = await db.query(`INSERT INTO posts (title, content, "userId") VALUES ($1, $2, $3)`, [title, content, userId])
             return h.response(data.rows)
         } catch (error) {
             console.error(error)
         }
     }
 }, {
+    // Edit a post
     method: 'PUT',
     path: '/api/posts/{id}',
     handler: async function (request, h) {
         try {
-            let payload = request.payload || {
-                title: 'title', 
-                content: 'content', 
-                userId: null
-            }
-            payload = {
-                title: payload.title || 'title', 
-                content: payload.content || 'content', 
-                userId: payload.userId || null
-            }
-            const data = await db.query(`UPDATE posts SET (title, content) = ($1, $2) WHERE id = $3`, [payload.title, payload.content, request.params.id])
+            const { title, content } = request.payload
+            const data = await db.query(`UPDATE posts SET (title, content) = ($1, $2) WHERE id = $3`, [title, content, request.params.id])
             return h.response(data.rows)
         } catch (error) {
             console.error(error)
         }
     }
 }, {
+    // Delete a post
     method: 'DELETE',
     path: '/api/posts/{id}',
     handler: async function (request, h) {
