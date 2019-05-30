@@ -9,7 +9,7 @@ const Cookie = require('@hapi/cookie');
 const publicPath = Path.join(__dirname, '../public');
 const PORT = process.env.PORT || 8080
 const routes = require('./routes')
-// const db = require('./db')
+const db = require('./db')
 
 // const users = [
 //     {
@@ -40,38 +40,54 @@ const provision = async () => {
         isSecure: false,
     });
 
-    // server.auth.strategy('session', 'cookie', {
-    //     cookie: {
-    //         name: 'website-cookie',
-    //         // password: '!wsYhFA*C2U6nz=Bu^%A@^F#SF3&kSR6',
-    //         password: '2hJ&aWNMvvR&uSh9uSHm%2GTU%WxxuYh',
-    //         isSecure: false,
-    //     },
+    server.auth.strategy('session', 'cookie', {
+        cookie: {
+            name: 'website-cookie',
+            // password: '!wsYhFA*C2U6nz=Bu^%A@^F#SF3&kSR6',
+            password: '2hJ&aWNMvvR&uSh9uSHm%2GTU%WxxuYh',
+            isSecure: false,
+        },
+        validateFunc: async (request, session) => {
+            const users = await db.query('SELECT id, username, password FROM users')// WHERE username = $1', [username])
+            const account = users.rows.find(user => {
+                return user.id === session.id
+            })
 
-    //     validateFunc: async (request, session) => {
-    //         const account = users.find((user) => (user.id = session.id));
+            if (!account) {
+                return { valid: false };
+            }
 
-    //         if (!account) {
-    //             return { valid: false };
-    //         }
+            return { valid: true, credentials: account };
+        }
+    });
 
-    //         return { valid: true, credentials: account };
-    //     }
-    // });
-
-    // server.auth.default('session');
+    server.auth.default({
+        // mode: 'optional',
+        strategy: 'session',
+        // payload: false
+    });
 
     server.route({
         method: 'GET',
         path: '/{param*}',
+        config: {
+            auth: {
+                mode: 'try'
+            }
+        },
         handler: function (request, h) {
             return h.file('index.html');
-        }
+        },
     });
 
     server.route({
         method: 'GET',
         path: '/assets/{filename*}',
+        config: {
+            auth: {
+                mode: 'try'
+            }
+        },
         handler: {
             directory: {
                 path: Path.join(publicPath, 'assets'),
@@ -82,6 +98,11 @@ const provision = async () => {
     // server.route({
     //     method: 'GET',
     //     path: '/assets/images/{param*}',
+    //     config: {
+    //         auth: {
+    //     mode: 'try'
+    // }
+    //     },
     //     handler: {
     //         directory: {
     //             path: Path.join(publicPath, 'assets/images'),

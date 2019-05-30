@@ -4,6 +4,11 @@ module.exports = [{
     // Load all posts
     method: 'GET',
     path: '/api/posts',
+    config: {
+        auth: {
+            mode: 'try'
+        }
+    },
     handler: async function (request, h) {
         try {
             const data = await db.query('SELECT * FROM posts')
@@ -16,6 +21,11 @@ module.exports = [{
     // Load single post
     method: 'GET',
     path: '/api/posts/{id}',
+    config: {
+        auth: {
+            mode: 'try'
+        }
+    },
     handler: async function (request, h) {
         try {
             const data = await db.query('SELECT * FROM posts WHERE id = $1', [request.params.id])

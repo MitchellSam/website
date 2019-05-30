@@ -9,13 +9,13 @@ const REMOVE_USER = 'REMOVE_USER'
 const defaultUser = {}
 
 // ACTION CREATORS
-const getUser = user => ({ 
-  type: GET_USER, 
-  user: user 
+const getUser = user => ({
+  type: GET_USER,
+  user: user
 })
 
-const removeUser = () => ({ 
-  type: REMOVE_USER 
+const removeUser = () => ({
+  type: REMOVE_USER
 })
 
 // THUNK CREATORS
@@ -48,17 +48,17 @@ export const loginUser = (body) => async dispatch => {
   let res
   try {
     res = await axios.post('/auth/login', body)
-  } catch (err) {
-    console.error(err)
+  } catch (authError) {
+    return dispatch(getUser({ error: authError }))
   }
 
   try {
-    if(res) {
+    if (res) {
       dispatch(getUser(res.data))
       // history.push('/profile')
     }
-  } catch (err) {
-    console.error(err)
+  } catch (dispatchOrHistoryErr) {
+    console.error(dispatchOrHistoryErr)
   }
 }
 
@@ -76,7 +76,7 @@ export const signupUser = (body) => async dispatch => {
 
   try {
     await axios.post('/api/users', body)
-    await dispatch(loginUser(body))
+    await loginUser(body)
     // let res = await axios.post('/auth/login', body)
     // dispatch(getUser(res.data))
   } catch (err) {

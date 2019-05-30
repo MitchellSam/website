@@ -42,32 +42,37 @@ module.exports = [{
     // Register a new user
     method: 'POST',
     path: '/api/users',
-    handler: async function (request, h) {
-        try {
-            const { username, password, firstname, lastname } = request.payload
-            const data = await db.query(`INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING *`, [username, password, firstname, lastname])
-            return data.rows
-        } catch (error) {
-            console.error(error)
+    config: {
+        auth: {
+            mode: 'try'
         }
-    }
+    },
     // handler: async function (request, h) {
-    //     const { username, password, firstname, lastname } = request.payload
-    //     let result = await bcrypt.hash(password, saltRounds, async function (err, hash) {
-    //         if (err) {
-    //             console.log(err.stack);
-    //         }
-    //         try {
-    //             const data = await db.query(`INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING *`, [username, hash, firstname, lastname])
-    //             // return data.rows
-    //             console.log(data.rows)
-    //             return data.rows
-    //         } catch (error) {
-    //             console.error(error)
-    //         }
-    //     })
-    //     return result
+    //     try {
+    //         const { username, password, firstname, lastname } = request.payload
+    //         const data = await db.query(`INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING *`, [username, password, firstname, lastname])
+    //         return data.rows
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
     // }
+    handler: async function (request, h) {
+        const { username, password, firstname, lastname } = request.payload
+        let result = await bcrypt.hash(password, saltRounds, async function (err, hash) {
+            if (err) {
+                console.log(err.stack);
+            }
+            try {
+                const data = await db.query(`INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING *`, [username, hash, firstname, lastname])
+                // return data.rows
+                console.log('api/users', data.rows)
+                return data.rows
+            } catch (error) {
+                console.error(error)
+            }
+        })
+        return result
+    }
     // handler: async function (request, h) {
     //     const { username, password, firstname, lastname } = request.payload
     //     bcrypt.genSalt(saltRounds, function (err1, salt) {
@@ -108,7 +113,9 @@ module.exports = [{
     handler: async function (request, h) {
         try {
             const data = await db.query('DELETE FROM users WHERE id = $1 RETURNING *', [request.params.id])
-            return data.rows
+            // h.unstate('session')
+            // auth logout
+            return 'User deleted and logged out.'
         } catch (error) {
             console.error(error)
         }

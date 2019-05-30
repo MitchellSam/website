@@ -1253,7 +1253,7 @@ function (_Component) {
 /*!*******************************!*\
   !*** ./client/store/index.js ***!
   \*******************************/
-/*! exports provided: default, getMe, loginUser, logoutUser, signupUser, loadAllPosts, loadSinglePost, submitPost, editPost, removePost */
+/*! exports provided: default, loadAllPosts, loadSinglePost, submitPost, editPost, removePost, getMe, loginUser, logoutUser, signupUser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1714,15 +1714,17 @@ var loginUser = function loginUser(body) {
               case 6:
                 _context2.prev = 6;
                 _context2.t0 = _context2["catch"](0);
-                console.error(_context2.t0);
+                return _context2.abrupt("return", dispatch(getUser({
+                  error: _context2.t0
+                })));
 
               case 9:
                 try {
                   if (res) {
                     dispatch(getUser(res.data)); // history.push('/profile')
                   }
-                } catch (err) {
-                  console.error(err);
+                } catch (dispatchOrHistoryErr) {
+                  console.error(dispatchOrHistoryErr);
                 }
 
               case 10:
@@ -1786,7 +1788,6 @@ var signupUser = function signupUser(body) {
       var _ref4 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4(dispatch) {
-        var res;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -1797,25 +1798,23 @@ var signupUser = function signupUser(body) {
 
               case 3:
                 _context4.next = 5;
-                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/auth/login', body);
+                return loginUser(body);
 
               case 5:
-                res = _context4.sent;
-                dispatch(getUser(res.data));
-                _context4.next = 12;
+                _context4.next = 10;
                 break;
 
-              case 9:
-                _context4.prev = 9;
+              case 7:
+                _context4.prev = 7;
                 _context4.t0 = _context4["catch"](0);
                 console.error(_context4.t0);
 
-              case 12:
+              case 10:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, null, [[0, 9]]);
+        }, _callee4, null, [[0, 7]]);
       }));
 
       return function (_x4) {
@@ -40373,7 +40372,7 @@ function warning(message) {
 /*!***************************************************************!*\
   !*** ./node_modules/react-router-dom/esm/react-router-dom.js ***!
   \***************************************************************/
-/*! exports provided: BrowserRouter, HashRouter, Link, NavLink, MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, generatePath, matchPath, withRouter, __RouterContext */
+/*! exports provided: MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, generatePath, matchPath, withRouter, __RouterContext, BrowserRouter, HashRouter, Link, NavLink */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

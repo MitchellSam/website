@@ -22,4 +22,8 @@ sessions
 auth
 oauth
 
+hapi-auth-cookie => default to having auth strategy applied to all routes, need to set config:{auth:false} or config:{auth:{mode:'try'}} for each public route including static assets
+
+react router needs to conditionally show/hide components based on if a user exists in redux state 
+
 materialUI
