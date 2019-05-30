@@ -898,8 +898,8 @@ function (_Component) {
     _this.state = {
       username: '',
       password: '',
-      firstName: '',
-      lastName: ''
+      firstname: '',
+      lastname: ''
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
@@ -939,17 +939,17 @@ function (_Component) {
         onChange: this.handleChange,
         placeholder: "password"
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, " First Name:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        name: "firstName",
+        name: "firstname",
         type: "text",
-        value: this.state.firstName,
+        value: this.state.firstname,
         onChange: this.handleChange,
-        placeholder: "firstName"
+        placeholder: "firstname"
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, " Last Name:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        name: "lastName",
+        name: "lastname",
         type: "text",
-        value: this.state.lastName,
+        value: this.state.lastname,
         onChange: this.handleChange,
-        placeholder: "lastName"
+        placeholder: "lastname"
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "submit",
         value: "Submit"
@@ -1786,6 +1786,7 @@ var signupUser = function signupUser(body) {
       var _ref4 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4(dispatch) {
+        var res;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -1796,23 +1797,25 @@ var signupUser = function signupUser(body) {
 
               case 3:
                 _context4.next = 5;
-                return dispatch(loginUser(body));
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/auth/login', body);
 
               case 5:
-                _context4.next = 10;
+                res = _context4.sent;
+                dispatch(getUser(res.data));
+                _context4.next = 12;
                 break;
 
-              case 7:
-                _context4.prev = 7;
+              case 9:
+                _context4.prev = 9;
                 _context4.t0 = _context4["catch"](0);
                 console.error(_context4.t0);
 
-              case 10:
+              case 12:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, null, [[0, 7]]);
+        }, _callee4, null, [[0, 9]]);
       }));
 
       return function (_x4) {
@@ -40370,7 +40373,7 @@ function warning(message) {
 /*!***************************************************************!*\
   !*** ./node_modules/react-router-dom/esm/react-router-dom.js ***!
   \***************************************************************/
-/*! exports provided: MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, generatePath, matchPath, withRouter, __RouterContext, BrowserRouter, HashRouter, Link, NavLink */
+/*! exports provided: BrowserRouter, HashRouter, Link, NavLink, MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, generatePath, matchPath, withRouter, __RouterContext */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

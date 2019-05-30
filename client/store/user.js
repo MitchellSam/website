@@ -77,6 +77,8 @@ export const signupUser = (body) => async dispatch => {
   try {
     await axios.post('/api/users', body)
     await dispatch(loginUser(body))
+    // let res = await axios.post('/auth/login', body)
+    // dispatch(getUser(res.data))
   } catch (err) {
     console.error(err)
   }

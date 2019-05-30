@@ -9,8 +9,8 @@ class Signup extends Component {
     this.state = {
       username: '',
       password: '',
-      firstName: '',
-      lastName: ''
+      firstname: '',
+      lastname: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -44,10 +44,10 @@ class Signup extends Component {
             <input name="password" type="text" value={this.state.password} onChange={this.handleChange} placeholder="password" />
           </label>
           <label> First Name:
-            <input name="firstName" type="text" value={this.state.firstName} onChange={this.handleChange} placeholder="firstName" />
+            <input name="firstname" type="text" value={this.state.firstname} onChange={this.handleChange} placeholder="firstname" />
           </label>
           <label> Last Name:
-            <input name="lastName" type="text" value={this.state.lastName} onChange={this.handleChange} placeholder="lastName" />
+            <input name="lastname" type="text" value={this.state.lastname} onChange={this.handleChange} placeholder="lastname" />
           </label>
           <input type="submit" value="Submit" />
         </form>
