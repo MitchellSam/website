@@ -48,8 +48,8 @@ module.exports = [{
         }
     },
     handler: async function (request, h) {
-        const { username, password, firstname, lastname } = request.payload
         try {
+            const { username, password, firstname, lastname } = request.payload
             const hashedPass = await bcrypt.hash(password, saltRounds)
             const data = await db.query(`INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING *`, [username, hashedPass, firstname, lastname])
             return data.rows
@@ -64,7 +64,8 @@ module.exports = [{
     handler: async function (request, h) {
         try {
             const { username, password, firstname, lastname } = request.payload
-            const data = await db.query(`UPDATE users SET (username, password, firstname, lastname) = ($1, $2, $3, $4) WHERE id = $5 RETURNING *`, [username, password, firstname, lastname, request.params.id])
+            const hashedPass = await bcrypt.hash(password, saltRounds)
+            const data = await db.query(`UPDATE users SET (username, password, firstname, lastname) = ($1, $2, $3, $4) WHERE id = $5 RETURNING *`, [username, hashedPass, firstname, lastname, request.params.id])
             return data.rows
         } catch (error) {
             console.error(error)

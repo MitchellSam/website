@@ -79,7 +79,37 @@ export const signupUser = (body) => async dispatch => {
   } catch (err) {
     console.error(err)
   }
-  
+
+  let res
+  try {
+    res = await axios.post('/auth/login', body)
+  } catch (authError) {
+    return dispatch(getUser({ error: authError }))
+  }
+
+  try {
+    if (res) {
+      dispatch(getUser(res.data))
+      history.push('/profile')
+    }
+  } catch (dispatchOrHistoryErr) {
+    console.error(dispatchOrHistoryErr)
+  }
+}
+
+export const editUser = (userId, body) => async dispatch => {
+  try {
+    await axios.put('/api/users/' + userId, body)
+  } catch (err) {
+    console.error(err)
+  }
+
+  try {
+    await axios.post('/api/users', body)
+  } catch (err) {
+    console.error(err)
+  }
+
   let res
   try {
     res = await axios.post('/auth/login', body)

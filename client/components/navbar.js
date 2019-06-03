@@ -1,69 +1,47 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { logoutUser } from '../store'
 
-// import PropTypes from 'prop-types'
-// import { connect } from 'react-redux'
-// import { logout } from '../store'
-
-// const Navbar = ({ handleClick, isLoggedIn }) => (
-//     <div>
-//         <Link to="/">
-//             <h1>WEBSITE</h1>
-//         </Link>
-//         <nav>
-//             {isLoggedIn ? (
-//                 <div>
-//                     <a href="#" onClick={handleClick}>
-//                         Logout
-//                     </a>
-//                 </div>
-//             ) : (
-//                     <div>
-//                         <Link to="/login">Login</Link>
-//                         <Link to="/signup">Sign Up</Link>
-//                     </div>
-//                 )
-//             }
-//         </nav>
-//         <hr />
-//     </div>
-// )
-
-// const mapState = state => {
-//     return {
-//         isLoggedIn: !!state.user.id
-//     }
-// }
-
-// const mapDispatch = dispatch => {
-//     return {
-//         handleClick() {
-//             dispatch(logout())
-//         }
-//     }
-// }
-
-// export default connect(mapState, mapDispatch)(Navbar)
-
-// Navbar.propTypes = {
-//     handleClick: PropTypes.func.isRequired,
-//     isLoggedIn: PropTypes.bool.isRequired
-// }
-
-/////
-
-const Navbar = () => {
+const Navbar = ({ isLoggedIn, submitLogout }) => {
     return (
         <nav>
             <Link to="/">
                 <h1>WEBSITE</h1>
             </Link>
 
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Sign Up</Link>
-            <Link to="/profile">Profile</Link>
+            {/* {!isLoggedIn ? (
+                <div>
+                    <Link to="/login">Log In</Link>
+                    <Link to="/signup">Sign Up</Link>
+                </div>) : (
+                <div>
+                    <Link to="/profile">Profile</Link>
+                    <a href="#" onClick={submitLogout}>Log Out</a>
+                </div>)
+            } */}
+
+            {!isLoggedIn ? <Link to="/login">Log In</Link> : null}
+            {!isLoggedIn ? <Link to="/signup">Sign Up</Link> : null}
+            {isLoggedIn ? <Link to="/profile">Profile</Link> : null}
+            {isLoggedIn ? <a href="#" onClick={submitLogout}>Log Out</a> : null}
+
         </nav>
     )
 }
 
-export default Navbar
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: !!state.user.id
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        submitLogout() {
+            dispatch(logoutUser())
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

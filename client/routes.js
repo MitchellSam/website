@@ -1,18 +1,29 @@
 import React, {Component} from 'react'
-import {Route, Switch} from 'react-router-dom'
+
+import {connect} from 'react-redux'
+import {withRouter, Route, Switch} from 'react-router-dom'
 import {AllPostsView, SinglePostView, Login, SignUp, Profile} from './components'
+
+import {getMe} from './store'
 
 class Routes extends Component {
   componentDidMount() {
+    this.props.loadInitialData()
   }
 
   render() {
+    const {isLoggedIn} = this.props
     return (
       <Switch>
         <Route exact path="/" component={AllPostsView} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/profile" component={Profile} />
+        
+        {isLoggedIn ? (
+          <Switch>
+            <Route path="/profile" component={Profile} />
+          </Switch>
+        ) : null }
 
         <Route path="/posts/:postId" component={SinglePostView} />
       </Switch>
@@ -20,4 +31,18 @@ class Routes extends Component {
   }
 }
 
-export default Routes
+const mapState = state => {
+  return {
+    isLoggedIn: !!state.user.id
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    loadInitialData() {
+      dispatch(getMe())
+    }
+  }
+}
+
+export default withRouter(connect(mapState, mapDispatch)(Routes))
