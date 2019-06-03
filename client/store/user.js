@@ -55,7 +55,7 @@ export const loginUser = (body) => async dispatch => {
   try {
     if (res) {
       dispatch(getUser(res.data))
-      // history.push('/profile')
+      history.push('/profile')
     }
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
@@ -66,7 +66,7 @@ export const logoutUser = () => async dispatch => {
   try {
     await axios.delete('/auth/logout')
     dispatch(removeUser())
-    // history.push('/')
+    history.push('/')
   } catch (err) {
     console.error(err)
   }
@@ -76,11 +76,24 @@ export const signupUser = (body) => async dispatch => {
 
   try {
     await axios.post('/api/users', body)
-    await loginUser(body)
-    // let res = await axios.post('/auth/login', body)
-    // dispatch(getUser(res.data))
   } catch (err) {
     console.error(err)
+  }
+  
+  let res
+  try {
+    res = await axios.post('/auth/login', body)
+  } catch (authError) {
+    return dispatch(getUser({ error: authError }))
+  }
+
+  try {
+    if (res) {
+      dispatch(getUser(res.data))
+      history.push('/profile')
+    }
+  } catch (dispatchOrHistoryErr) {
+    console.error(dispatchOrHistoryErr)
   }
 }
 

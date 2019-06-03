@@ -40,9 +40,6 @@ module.exports = [{
             
             if (!user.rows[0] || !(await bcrypt.compare(password, user.rows[0].password))) {
                 return 'Incorrect login.'
-
-            // if (!user.rows[0]) {
-            //     return 'Incorrect login.'
             } else {
                 request.cookieAuth.set({ 
                     id: user.rows[0].id
@@ -65,41 +62,6 @@ module.exports = [{
             console.error(error)
         }
     }
-    // handler: async function (request, h) {
-    //     const { username, password } = request.payload
-    //     try {
-    //         const user = await db.query('SELECT * FROM users WHERE username = $1', [username])
-    //         console.log(username, password, user.rows[0].password)
-    //         bcrypt.compare(password, user.rows[0].password, async function (err, res) {
-    //             if (err) {
-    //                 console.log(err.stack);
-    //             }
-    //             if (res) {
-    //                 // Passwords match
-    //                 let cookie = request.state.session
-
-    //                 if (!cookie) {
-    //                     cookie = {
-    //                         userId: user.rows[0].id,
-    //                         counter: 0,
-    //                     }
-    //                 }
-    //                 ++cookie.counter
-
-    //                 console.log(cookie)
-
-    //                 h.state('session', cookie)
-    //                 // return user.rows[0]
-    //                 return user.rows[0]
-    //             } else {
-    //                 // Passwords don't match
-    //                 return 'Incorrect login.'
-    //             }
-    //         })
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
 }, {
     // Log out the user
     method: 'DELETE',
@@ -109,7 +71,7 @@ module.exports = [{
             mode: 'try'
         }
     },
-    handler: async function (request, h) {
+    handler: function (request, h) {
         try {
             request.cookieAuth.clear()
             h.unstate('session')

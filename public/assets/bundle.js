@@ -1721,7 +1721,8 @@ var loginUser = function loginUser(body) {
               case 9:
                 try {
                   if (res) {
-                    dispatch(getUser(res.data)); // history.push('/profile')
+                    dispatch(getUser(res.data));
+                    _history__WEBPACK_IMPORTED_MODULE_1__["default"].push('/profile');
                   }
                 } catch (dispatchOrHistoryErr) {
                   console.error(dispatchOrHistoryErr);
@@ -1757,22 +1758,22 @@ var logoutUser = function logoutUser() {
                 return axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]('/auth/logout');
 
               case 3:
-                dispatch(removeUser()); // history.push('/')
-
-                _context3.next = 9;
+                dispatch(removeUser());
+                _history__WEBPACK_IMPORTED_MODULE_1__["default"].push('/');
+                _context3.next = 10;
                 break;
 
-              case 6:
-                _context3.prev = 6;
+              case 7:
+                _context3.prev = 7;
                 _context3.t0 = _context3["catch"](0);
                 console.error(_context3.t0);
 
-              case 9:
+              case 10:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 6]]);
+        }, _callee3, null, [[0, 7]]);
       }));
 
       return function (_x3) {
@@ -1788,6 +1789,7 @@ var signupUser = function signupUser(body) {
       var _ref4 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4(dispatch) {
+        var res;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -1797,24 +1799,47 @@ var signupUser = function signupUser(body) {
                 return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/users', body);
 
               case 3:
-                _context4.next = 5;
-                return loginUser(body);
-
-              case 5:
-                _context4.next = 10;
+                _context4.next = 8;
                 break;
 
-              case 7:
-                _context4.prev = 7;
+              case 5:
+                _context4.prev = 5;
                 _context4.t0 = _context4["catch"](0);
                 console.error(_context4.t0);
 
-              case 10:
+              case 8:
+                _context4.prev = 8;
+                _context4.next = 11;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/auth/login', body);
+
+              case 11:
+                res = _context4.sent;
+                _context4.next = 17;
+                break;
+
+              case 14:
+                _context4.prev = 14;
+                _context4.t1 = _context4["catch"](8);
+                return _context4.abrupt("return", dispatch(getUser({
+                  error: _context4.t1
+                })));
+
+              case 17:
+                try {
+                  if (res) {
+                    dispatch(getUser(res.data));
+                    _history__WEBPACK_IMPORTED_MODULE_1__["default"].push('/profile');
+                  }
+                } catch (dispatchOrHistoryErr) {
+                  console.error(dispatchOrHistoryErr);
+                }
+
+              case 18:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, null, [[0, 7]]);
+        }, _callee4, null, [[0, 5], [8, 14]]);
       }));
 
       return function (_x4) {
